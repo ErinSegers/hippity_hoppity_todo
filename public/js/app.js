@@ -8,22 +8,31 @@ var todoApp = {
   cacheDom: function(){
     this.createButton = document.querySelector('#create');
     this.taskInput = document.querySelector('#task');
+    this.categoryInput = document.querySelector('#category');
+    this.dateInput = document.querySelector('#date');
     this.list = document.querySelector('#list');
   },
   addEventListeners (){
     this.createButton.addEventListener('click', this.addToDo);
   },
   render: function (){
+    console.log(todoApp.todos);
     var listItemsFromTodos = this.todos
                                   .map(function(todo){
-                                      return '<li>'+ todo + '</li>';
+                                      return `<li>${todo.task}:(${todo.date})[${todo.category}]</li>`; //template literal
                                   })
                                   .join('');
     this.list.innerHTML = listItemsFromTodos;
   },
   addToDo: function (){
-    var taskValue = todoApp.taskInput.value; //.value is specific to input fields
-    todoApp.todos.push(taskValue);
+    var task = todoApp.taskInput.value; //.value is specific to input fields
+    var date = todoApp.dateInput.value;
+    var category = todoApp.categoryInput.value;
+    var newTodo = createTodo(task, date, category)
+    todoApp.todos.push(newTodo);
+    todoApp.taskInput.value = '';
+    todoApp.categoryInput.value = '';
+    todoApp.dateInput.value = '';
     todoApp.render();
   }
 };
